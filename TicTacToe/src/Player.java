@@ -35,7 +35,7 @@
 public class Player
 {
   //=======================================================================
-  // FIELDS DEFINED HERE:
+  // FIELDS
   //=======================================================================
   private int    playerNo = 0;
   private String playerName = "";
@@ -43,9 +43,7 @@ public class Player
   
   
   //=======================================================================
-  // CONSTRUCTORS DEFINED HERE:
-  //-----------------------------------------------------------------------
-  // Constructors are used to instantiate objects of the class.
+  // CONSTRUCTORS
   //=======================================================================
   public Player()
   {
@@ -60,20 +58,36 @@ public class Player
   
   
   //=======================================================================
-  // SET METHODS DEFINED HERE:
+  // METHOD:       setPlayerNo
+  // RETURN TYPE:  void
+  // PARAMETER(S): int no
   //-----------------------------------------------------------------------
-  // Set methods are used to assign values to the class's fields.
+  // Purpose: To assign a value to field playerNo.
   //=======================================================================
   public void setPlayerNo(int no)
   {
     playerNo = no;
   }// END setPlayerNo
   
+  //=======================================================================
+  // METHOD:       setPlayerName
+  // RETURN TYPE:  void
+  // PARAMETER(S): String nm
+  //-----------------------------------------------------------------------
+  // Purpose: To assign a value to field playerName
+  //=======================================================================
   public void setPlayerName(String nm)
   {
     playerName = nm;
   }// END setPlayerName
-
+  
+  //=======================================================================
+  // METHOD:       setPlayerMarker
+  // RETURN TYPE:  void
+  // PARAMETER(S): char mkr
+  //-----------------------------------------------------------------------
+  // Purpose: To assign a value to field playerMarker
+  //=======================================================================
   public void setPlayerMarker(char mkr)
   {
     playerMarker = mkr;
@@ -81,20 +95,36 @@ public class Player
   
   
   //=======================================================================
-  // GET METHODS DEFINED HERE:
+  // METHOD:       getPlayerNo
+  // RETURN TYPE:  int
+  // PARAMETER(S): n/a
   //-----------------------------------------------------------------------
-  // Get methods are used to return the value of the class's fields.
+  // Purpose: To return the value of field playerNo
   //=======================================================================
   public int getPlayerNo()
   {
     return playerNo;
   }// END getPlayerNo
   
+  //=======================================================================
+  // METHOD:       getPlayerName
+  // RETURN TYPE:  String
+  // PARAMETER(S): n/a
+  //-----------------------------------------------------------------------
+  // Purpose: To return the value of field playerName
+  //=======================================================================
   public String getPlayerName()
   {
     return playerName;
   }// END getPlayerName
   
+  //=======================================================================
+  // METHOD:       getPlayerMarker
+  // RETURN TYPE:  char
+  // PARAMETER(S): n/a
+  //-----------------------------------------------------------------------
+  // Purpose: To return the value of field playerMarker
+  //=======================================================================
   public char getPlayerMarker()
   {
     return playerMarker;
@@ -102,18 +132,18 @@ public class Player
   
   
   //=======================================================================
-  // TO-STRING METHOD DEFINED HERE:
+  // METHOD:       toString
+  // RETURN TYPE:  String
+  // PARAMETER(S): n/a
   //-----------------------------------------------------------------------
-  // The toString method provides a quick way to display all of the class's
-  // meaningful fields at once.
+  // Purpose: To return a summary of the class's meaningful attributes at
+  //          any given point in time.
   //=======================================================================
   public String toString()
   {
-    return String.format("Player Number: %d" +
-                         "%nPlayer Name:   %s" +
-                         "%nPlayer Marker: %c",
-                         getPlayerNo(),
-                         getPlayerName(),
-                         getPlayerMarker());
+    return String.format("%n%n=== PLAYER #%d ===" +
+                         "%nNAME:   %s" +
+                         "%nMARKER: %c",
+                         getPlayerNo() + 1, getPlayerName(), getPlayerMarker());
   }// END toString
 }// END class Player

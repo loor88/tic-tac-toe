@@ -25,12 +25,13 @@
 //     > + getIsActive():                   boolean
 //
 //   Functional Methods:
-//     > + checkBoardSpace(int row, int col): boolean
-//     > + checkGameStatus():                 void           ?v?
-//     > - checkRows():                       boolean         ?
-//     > - checkColumns():                    boolean         ?
-//     > - checkDiagonals():                  boolean         ?
-//     > + resetBoard():                      void
+//     > + checkEmptyBoardSpace(int row, int col): boolean
+//     > + checkGameStatus():                      void
+//     > - checkRows():                            boolean
+//     > - checkColumns():                         boolean
+//     > - checkDiagonals():                       boolean
+//     > - checkFull():                            boolean
+//     > + resetBoard():                           void
 //
 //   toString Method:
 //     > + toString(): String
@@ -39,16 +40,14 @@
 public class GameBoard
 {
   //=======================================================================
-  // FIELDS DEFINED HERE:
+  // FIELDS 
   //=======================================================================
   private char[][] board = new char[3][3];
   private boolean  isActive = true;
   
   
   //=======================================================================
-  // CONSTRUCTORS DEFINED HERE:
-  //-----------------------------------------------------------------------
-  // Constructors are used to instantiate objects of the class.
+  // CONSTRUCTORS
   //=======================================================================
   public GameBoard()
   {
@@ -56,15 +55,24 @@ public class GameBoard
   
   
   //=======================================================================
-  // SET METHODS DEFINED HERE:
+  // METHOD:       setBoardSpace
+  // RETURN TYPE:  void
+  // PARAMETER(S): int row, int col, char marker
   //-----------------------------------------------------------------------
-  // Set methods are used to assign values to the class's fields.
+  // Purpose: To mark a specified position on the Tic-Tac-Toe board.
   //=======================================================================
   public void setBoardSpace(int row, int col, char marker)
   {
     board[row][col] = marker;
   }// END setBoardSpace
   
+  //=======================================================================
+  // METHOD:       setIsActive
+  // RETURN TYPE:  void
+  // PARAMETER(S): boolean act
+  //-----------------------------------------------------------------------
+  // Purpose: To assign a value to field isActive.
+  //=======================================================================
   private void setIsActive(boolean act)
   {
     isActive = act;
@@ -72,20 +80,39 @@ public class GameBoard
   
   
   //=======================================================================
-  // GET METHODS DEFINED HERE:
+  // METHOD:       getBoard
+  // RETURN TYPE:  char[][]
+  // PARAMETER(S): n/a
   //-----------------------------------------------------------------------
-  // Get methods are used to return the value of the class's fields.
+  // Purpose: To return a 2-D char array representing the current state of
+  //          the game board.
   //=======================================================================
   public char[][] getBoard()
   {
     return board;
   }// END getBoard
   
-  private char getBoardSpace(int row, int column)
+  //=======================================================================
+  // METHOD:       getBoardSpace
+  // RETURN TYPE:  char
+  // PARAMETER(S): int row, int col
+  //-----------------------------------------------------------------------
+  // Purpose: To return a char representing the marker placed on a
+  //          specified board position.
+  //=======================================================================
+  private char getBoardSpace(int row, int col)
   {
-    return getBoard()[row][column];
+    return getBoard()[row][col];
   }// END getBoardSpace
   
+  
+  //=======================================================================
+  // METHOD:       getIsActive
+  // RETURN TYPE:  boolean
+  // PARAMETER(S): n/a
+  //-----------------------------------------------------------------------
+  // Purpose: To return the value of field isActive.
+  //=======================================================================
   public boolean getIsActive()
   {
     return isActive;
@@ -93,28 +120,48 @@ public class GameBoard
   
   
   //=======================================================================
-  // FUNCTIONAL METHODS DEFINED HERE:
+  // METHOD:       checkEmptyBoardSpace
+  // RETURN TYPE:  boolean
+  // PARAMETER(S): int row, int col
   //-----------------------------------------------------------------------
-  // Functional methods are used to provide meaningful functionality to the
-  // class.
+  // Purpose: To determine whether a space on the Tic-Tac-Toe board has
+  //          been marked by a player.
   //=======================================================================
-  public boolean checkBoardSpace(int row, int col)
+  public boolean checkEmptyBoardSpace(int row, int col)
   {
     return (getBoardSpace(row, col) == ' ' ? true : false);
-  }// END checkBoardSpace
+  }// END checkEmptyBoardSpace
   
+  //=======================================================================
+  // METHOD:       checkGameStatus
+  // RETURN TYPE:  void
+  // PARAMETER(S): n/a
+  //-----------------------------------------------------------------------
+  // Purpose: To determine whether a Tic-Tac-Toe game is still active.
+  //=======================================================================
   public void checkGameStatus()
   {
-    
+    if(checkRows() |checkColumns() | checkDiagonals() | checkFull())
+    {
+      setIsActive(false);
+    }// END if game is over
   }// END checkGameStatus
   
+  //=======================================================================
+  // METHOD:       checkRows
+  // RETURN TYPE:  boolean
+  // PARAMETER(S): n/a
+  //-----------------------------------------------------------------------
+  // Purpose: To check each row of the Tic-Tac-Toe board for 3 similar
+  //          markers in a row.
+  //=======================================================================
   private boolean checkRows()
   {
     boolean areSimilar = false;
     
     for(int row = 0; row < getBoard().length; row++)
     {
-      if(!checkBoardSpace(row, 0) &&
+      if(!checkEmptyBoardSpace(row, 0) &&
          getBoardSpace(row, 0) == getBoardSpace(row, 1) &&
          getBoardSpace(row, 0) == getBoardSpace(row, 2))
       {
@@ -125,13 +172,21 @@ public class GameBoard
     return areSimilar;
   }// END checkRows
   
+  //=======================================================================
+  // METHOD:       checkColumns
+  // RETURN TYPE:  boolean
+  // PARAMETER(S): n/a
+  //-----------------------------------------------------------------------
+  // Purpose: To check each column of the Tic-Tac-Toe board for 3 similar
+  //          markers in a row.
+  //=======================================================================
   private boolean checkColumns()
   {
     boolean areSimilar = false;
     
     for(int col = 0; col < getBoard().length; col++)
     {
-      if(!checkBoardSpace(0, col) &&
+      if(!checkEmptyBoardSpace(0, col) &&
          getBoardSpace(0, col) == getBoardSpace(1, col) &&
          getBoardSpace(0, col) == getBoardSpace(2, col))
       {
@@ -142,11 +197,19 @@ public class GameBoard
     return areSimilar;
   }// END checkColumns
   
+  //=======================================================================
+  // METHOD:       checkDiagonals
+  // RETURN TYPE:  boolean
+  // PARAMETER(S): n/a
+  //-----------------------------------------------------------------------
+  // Purpose: To check each diagonal of the Tic-Tac-Toe board for 3 similar
+  //          markers in a row.
+  //=======================================================================
   private boolean checkDiagonals()
   {
     boolean areSimilar = false;
     
-    if(!checkBoardSpace(1, 1))
+    if(!checkEmptyBoardSpace(1, 1))
     {
       if(getBoardSpace(0, 0) == getBoardSpace(1, 1) &&
          getBoardSpace(0, 0) == getBoardSpace(2, 2))
@@ -163,6 +226,39 @@ public class GameBoard
     return areSimilar;
   }// END checkDiagonals
   
+  //=======================================================================
+  // METHOD:       checkFull
+  // RETURN TYPE:  boolean
+  // PARAMETER(S): n/a
+  //-----------------------------------------------------------------------
+  // Purpose: To determine if the Tic-Tac-Toe board is full of player
+  //          markers.
+  //=======================================================================
+  private boolean checkFull()
+  {
+    boolean isFull = false;
+    
+    for(int row = 0; row < board.length; row++)
+    {
+      for(int col = 0; col < board[row].length; col++)
+      {
+        if(checkEmptyBoardSpace(row, col))
+        {
+          isFull = true;
+        }// END if board space is not empty
+      }// END column-iterating for loop
+    }// END row-iterating for loop
+    
+    return isFull;
+  }// END checkFull
+  
+  //=======================================================================
+  // METHOD:       resetBoard
+  // RETURN TYPE:  void
+  // PARAMETER(S): n/a
+  //-----------------------------------------------------------------------
+  // Purpose: To wipe the Tic-Tac-Toe board of player markers.
+  //=======================================================================
   public void resetBoard()
   {
     for(int row = 0; row < board.length; row++)
@@ -178,10 +274,12 @@ public class GameBoard
   
   
   //=======================================================================
-  // TO-STRING METHOD DEFINED HERE:
+  // METHOD:       toString
+  // RETURN TYPE:  String
+  // PARAMETER(S): n/a
   //-----------------------------------------------------------------------
-  // The toString method provides a quick way to display all of the class's
-  // meaningful fields at once.
+  // Purpose: To return a summary of the class's meaningful attributes at
+  //          any given point in time.
   //=======================================================================
   public String toString()
   {
