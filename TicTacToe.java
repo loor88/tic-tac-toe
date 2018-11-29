@@ -15,8 +15,16 @@
 //   > - input: static Scanner
 //
 // Methods:
-//   > + main(String[] args): static void
-//   > + setPlayers(): static Player[]
+//   > + main(String[] args):                          static void
+//   > + determinePlayerName(int playerCount):         static String
+//   > + determinePlayerMarker(int playerCount):       static char
+//   > + verifyPlayerInfo(Player player):              static char
+//   > + displayTurnHeader(String name, String board): static void
+//   > + determineRowChoice():                         static int
+//   > + determineColumnChoice():                      static int
+//   > + verifyRowSelection(int row):                  static boolean
+//   > + verifyColumnSelection(int col)                static boolean
+//   > + 
 //=========================================================================
 
 
@@ -216,7 +224,7 @@ public class TicTacToe
   //=======================================================================
   // METHOD:       verifyRowSelection
   // RETURN TYPE:  boolean
-  // PARAMETER(S): int
+  // PARAMETER(S): int row
   //-----------------------------------------------------------------------
   // Purpose: To return a boolean value representing whether parameter row
   //          is a valid row value (0 - 2, inclusive). If row is invalid,
@@ -240,7 +248,7 @@ public class TicTacToe
   //=======================================================================
   // METHOD:       verifyColumnSelection
   // RETURN TYPE:  boolean
-  // PARAMETER(S): int
+  // PARAMETER(S): int col
   //-----------------------------------------------------------------------
   // Purpose: To return a boolean value representing whether parameter col
   //          is a valid column value (0 - 2, inclusive). If col is
@@ -261,7 +269,14 @@ public class TicTacToe
   }// END verifyColumnSelection
   
   
-  
+  //=======================================================================
+  // METHOD:       displayOccupiedMessage
+  // RETURN TYPE:  void
+  // PARAMETER(S): int row, int col
+  //-----------------------------------------------------------------------
+  // Purpose: To display a message indicating that a Tic-Tac-Toe Board
+  //          space has aleady been marked.
+  //=======================================================================
   public static void displayOccupiedMessage(int row, int col)
   {
     System.out.printf("%nBoard space (%d, %d) has already been marked. Please try again.",
