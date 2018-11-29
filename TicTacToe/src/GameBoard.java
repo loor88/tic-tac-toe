@@ -32,9 +32,7 @@
 //     > - checkDiagonals():                       boolean
 //     > - checkFull():                            boolean
 //     > + resetBoard():                           void
-//
-//   toString Method:
-//     > + toString(): String
+//     > + displayGameBoard():                     String
 //=========================================================================
 
 public class GameBoard
@@ -141,7 +139,7 @@ public class GameBoard
   //=======================================================================
   public void checkGameStatus()
   {
-    if(checkRows() |checkColumns() | checkDiagonals() | checkFull())
+    if(checkRows() | checkColumns() | checkDiagonals() | checkFull())
     {
       setIsActive(false);
     }// END if game is over
@@ -237,19 +235,23 @@ public class GameBoard
   private boolean checkFull()
   {
     boolean isFull = false;
+    int totalSpaces = 0;
+    int markedSpaces = 0;
     
     for(int row = 0; row < board.length; row++)
     {
       for(int col = 0; col < board[row].length; col++)
       {
-        if(checkEmptyBoardSpace(row, col))
+        totalSpaces++;
+        
+        if(!checkEmptyBoardSpace(row, col))
         {
-          isFull = true;
+          markedSpaces++;
         }// END if board space is not empty
       }// END column-iterating for loop
     }// END row-iterating for loop
     
-    return isFull;
+    return (totalSpaces == markedSpaces ? true : false);
   }// END checkFull
   
   //=======================================================================
@@ -274,23 +276,23 @@ public class GameBoard
   
   
   //=======================================================================
-  // METHOD:       toString
+  // METHOD:       displayGameBoard
   // RETURN TYPE:  String
   // PARAMETER(S): n/a
   //-----------------------------------------------------------------------
-  // Purpose: To return a summary of the class's meaningful attributes at
-  //          any given point in time.
+  // Purpose: To return a String representing the Tic-Tac-Toe board's
+  //          current state.
   //=======================================================================
-  public String toString()
+  public String displayGameBoard()
   {
-    return String.format(" %s | %s | %s " +
+    return String.format("  %c | %c | %c " +
                          "%n ---+---+---" +
-                         "%n %s | %s | %s " +
+                         "%n  %c | %c | %c " +
                          "%n ---+---+---" +
-                         "%n %s | %s | %s ",
+                         "%n  %c | %c | %c ",
                          getBoardSpace(0, 0), getBoardSpace(0, 1), getBoardSpace(0, 2),
                          getBoardSpace(1, 0), getBoardSpace(1, 1), getBoardSpace(1, 2),
                          getBoardSpace(2, 0), getBoardSpace(2, 1), getBoardSpace(2, 2));
-  }// END toString
+  }// END displayGameBoard
   
 }// END class GameBoard
