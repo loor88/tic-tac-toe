@@ -24,7 +24,7 @@
 //   > + determineColumnChoice():                      static int
 //   > + verifyRowSelection(int row):                  static boolean
 //   > + verifyColumnSelection(int col)                static boolean
-//   > + 
+//   > + displayWinMessage(String board, String name): static void
 //=========================================================================
 
 
@@ -80,7 +80,7 @@ public class TicTacToe
     //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     gameBoard.resetBoard();
     
-    while(gameBoard.getIsActive())
+    do
     {
       activePlayer = (turn % 2 != 0 ? players[0] : players[1]);
       
@@ -110,12 +110,14 @@ public class TicTacToe
       
       gameBoard.checkGameStatus();
       
-      if(gameBoard.getIsActive())
+      if(!gameBoard.getIsActive())
       {
-        turn++;
+        displayWinMessage(gameBoard.displayGameBoard(), activePlayer.getPlayerName());
       }// END if game is active
       
-    }// END game-faciliating while loop
+      turn++;
+      
+    }while(gameBoard.getIsActive());
     
     
     
@@ -280,7 +282,25 @@ public class TicTacToe
   public static void displayOccupiedMessage(int row, int col)
   {
     System.out.printf("%nBoard space (%d, %d) has already been marked. Please try again.",
-                      row, col);
+                      row,
+                      col);
   }// END displayOccupiedMessage
+  
+  
+  //=======================================================================
+  // METHOD:       displayWinMessage
+  // RETURN TYPE:  void
+  // PARAMETER(S): String board, String name
+  //-----------------------------------------------------------------------
+  // Purpose: To display a message indicating that a Tic-Tac-Toe Board
+  //          space has aleady been marked.
+  //=======================================================================
+  public static void displayWinMessage(String board, String name)
+  {
+    System.out.printf("%n%s" +
+                      "%n%nWINNER: %s",
+                      board,
+                      name);
+  }// END displayWinMessage
   
 }// END APPLICATION CLASS TicTacToe
