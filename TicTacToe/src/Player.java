@@ -8,27 +8,27 @@
 //          be instantiated in every Tic-Tac-Toe game.
 //-------------------------------------------------------------------------
 // Fields:
-//   > - playerNo:     int
-//   > - playerName:   String
-//   > - playerMarker: char
+//   - playerNo:     int
+//   - playerName:   String
+//   - playerMarker: char
 //
 // Methods:
 //   Constructors:
-//     > + Player()
-//     > + Player(int no, String nm, char mkr)
+//     + Player()
+//     + Player(int no, String nm, char mkr)
 //
 //   Set Methods:
-//     > + setPlayerNo(int no):       void
-//     > + setPlayerName(String nm):  void
-//     > + setPlayerMarker(char mkr): void
+//     + setPlayerNo(int no):       void
+//     + setPlayerName(String nm):  void
+//     + setPlayerMarker(char mkr): void
 //
 //   Get Methods:
-//     > + getPlayerNo():     int
-//     > + getPlayerName():   String
-//     > + getPlayerMarker(): char
+//     + getPlayerNo():     int
+//     + getPlayerName():   String
+//     + getPlayerMarker(): char
 //
 //   toString Method:
-//     > + toString(): String
+//     + toString(): String
 //=========================================================================
 
 
@@ -37,9 +37,9 @@ public class Player
   //=======================================================================
   // FIELDS
   //=======================================================================
-  private int    playerNo = 0;
-  private String playerName = "";
-  private char   playerMarker = ' ';
+  private int    playerNo;
+  private String playerName;
+  private char   playerMarker;
   
   
   //=======================================================================
@@ -141,9 +141,10 @@ public class Player
   //=======================================================================
   public String toString()
   {
-    return String.format("%n%n=== PLAYER #%d ===" +
+    return String.format("=== PLAYER #%d ===" +
                          "%nNAME:   %s" +
                          "%nMARKER: %c",
                          getPlayerNo() + 1, getPlayerName(), getPlayerMarker());
   }// END toString
+  
 }// END class Player

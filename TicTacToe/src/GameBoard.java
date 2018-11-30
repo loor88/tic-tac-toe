@@ -8,31 +8,34 @@
 //          should be instantiated per game.
 //-------------------------------------------------------------------------
 // Fields:
-//   > - board:    char[][]
-//   > - isActive: boolean
+//   - board:  char[][]
+//   - isWon:  boolean
+//   - isFull: boolean
 //
 // Methods:
 //   Constructors:
-//     > + GameBoard()
+//     + GameBoard()
 //
 //   Set Methods:
-//     > + setBoardSpace(int row, int col, char marker): void
-//     > - setIsActive(boolean act): void
+//     + setBoardSpace(int row, int col, char marker): void
+//     - setIsWon(boolean won):                        void
+//     - setIsFull(boolean full):                      void     
 //
 //   Get Methods:
-//     > - getBoard():                      char[][]
-//     > - getBoardSpace(int row, int col): char
-//     > + getIsActive():                   boolean
+//     - getBoard():                      char[][]
+//     - getBoardSpace(int row, int col): char
+//     + getIsWon():                      boolean
+//     + getIsFull():                     boolean
 //
 //   Functional Methods:
-//     > + checkEmptyBoardSpace(int row, int col): boolean
-//     > + checkGameStatus():                      void
-//     > - checkRows():                            boolean
-//     > - checkColumns():                         boolean
-//     > - checkDiagonals():                       boolean
-//     > - checkFull():                            boolean
-//     > + resetBoard():                           void
-//     > + displayGameBoard():                     String
+//     + checkEmptyBoardSpace(int row, int col): boolean
+//     + checkGameStatus():                      void
+//     - checkRows():                            boolean
+//     - checkColumns():                         boolean
+//     - checkDiagonals():                       boolean
+//     + checkFull():                            void
+//     + resetBoard():                           void
+//     + displayGameBoard():                     String
 //=========================================================================
 
 public class GameBoard
@@ -41,7 +44,8 @@ public class GameBoard
   // FIELDS 
   //=======================================================================
   private char[][] board = new char[3][3];
-  private boolean  isActive = true;
+  private boolean  isWon;
+  private boolean  isFull;
   
   
   //=======================================================================
@@ -49,6 +53,8 @@ public class GameBoard
   //=======================================================================
   public GameBoard()
   {
+    setIsWon(false);
+    setIsFull(false);
   }// END null constructor
   
   
@@ -65,17 +71,28 @@ public class GameBoard
   }// END setBoardSpace
   
   //=======================================================================
-  // METHOD:       setIsActive
+  // METHOD:       setIsWon
   // RETURN TYPE:  void
-  // PARAMETER(S): boolean act
+  // PARAMETER(S): boolean won
   //-----------------------------------------------------------------------
-  // Purpose: To assign a value to field isActive.
+  // Purpose: To assign a value to field isWon.
   //=======================================================================
-  private void setIsActive(boolean act)
+  private void setIsWon(boolean won)
   {
-    isActive = act;
+    isWon = won;
   }// END setIsActive
   
+  //=======================================================================
+  // METHOD:       setIsWon
+  // RETURN TYPE:  void
+  // PARAMETER(S): boolean won
+  //-----------------------------------------------------------------------
+  // Purpose: To assign a value to field isWon.
+  //=======================================================================
+  public void setIsFull(boolean full)
+  {
+    isFull = full;
+  }// END setIsFull
   
   //=======================================================================
   // METHOD:       getBoard
@@ -103,18 +120,29 @@ public class GameBoard
     return getBoard()[row][col];
   }// END getBoardSpace
   
-  
   //=======================================================================
-  // METHOD:       getIsActive
+  // METHOD:       getIsWon
   // RETURN TYPE:  boolean
   // PARAMETER(S): n/a
   //-----------------------------------------------------------------------
-  // Purpose: To return the value of field isActive.
+  // Purpose: To return the value of field isWon.
   //=======================================================================
-  public boolean getIsActive()
+  public boolean getIsWon()
   {
-    return isActive;
+    return isWon;
   }// END getIsActive
+  
+  //=======================================================================
+  // METHOD:       getIsFull
+  // RETURN TYPE:  boolean
+  // PARAMETER(S): n/a
+  //-----------------------------------------------------------------------
+  // Purpose: To return the value of field isFull.
+  //=======================================================================
+  public boolean getIsFull()
+  {
+    return isFull;
+  }// END getIsFull
   
   
   //=======================================================================
@@ -139,9 +167,9 @@ public class GameBoard
   //=======================================================================
   public void checkGameStatus()
   {
-    if(checkRows() | checkColumns() | checkDiagonals() | checkFull())
+    if(checkRows() || checkColumns() || checkDiagonals())
     {
-      setIsActive(false);
+      setIsWon(true);
     }// END if game is over
   }// END checkGameStatus
   
@@ -226,15 +254,14 @@ public class GameBoard
   
   //=======================================================================
   // METHOD:       checkFull
-  // RETURN TYPE:  boolean
+  // RETURN TYPE:  void
   // PARAMETER(S): n/a
   //-----------------------------------------------------------------------
   // Purpose: To determine if the Tic-Tac-Toe board is full of player
   //          markers.
   //=======================================================================
-  private boolean checkFull()
+  public void checkFull()
   {
-    boolean isFull = false;
     int totalSpaces = 0;
     int markedSpaces = 0;
     
@@ -250,8 +277,8 @@ public class GameBoard
         }// END if board space is not empty
       }// END column-iterating for loop
     }// END row-iterating for loop
-    
-    return (totalSpaces == markedSpaces ? true : false);
+   
+    setIsFull(totalSpaces == markedSpaces ? true : false);
   }// END checkFull
   
   //=======================================================================
@@ -270,10 +297,10 @@ public class GameBoard
         setBoardSpace(row, col, ' ');
       }// END column-iterating for loop
       
-      setIsActive(true);
+      setIsWon(false);
+      setIsFull(false);
     }// END row-iterating for loop
   }// END resetBoard
-  
   
   //=======================================================================
   // METHOD:       displayGameBoard

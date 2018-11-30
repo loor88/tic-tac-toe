@@ -12,19 +12,21 @@
 //   > Scanner
 //
 // Fields:
-//   > - input: static Scanner
+//   - input: static Scanner
 //
 // Methods:
-//   > + main(String[] args):                          static void
-//   > + determinePlayerName(int playerCount):         static String
-//   > + determinePlayerMarker(int playerCount):       static char
-//   > + verifyPlayerInfo(Player player):              static char
-//   > + displayTurnHeader(String name, String board): static void
-//   > + determineRowChoice():                         static int
-//   > + determineColumnChoice():                      static int
-//   > + verifyRowSelection(int row):                  static boolean
-//   > + verifyColumnSelection(int col)                static boolean
-//   > + displayWinMessage(String board, String name): static void
+//   + main(String[] args):                          static void
+//   + determinePlayerName(int playerCount):         static String
+//   + determinePlayerMarker(int playerCount):       static char
+//   + verifyPlayerInfo(Player player):              static char
+//   + displayTurnHeader(String name, String board): static void
+//   + determineRowChoice():                         static int
+//   + determineColumnChoice():                      static int
+//   + verifyRowSelection(int row):                  static boolean
+//   + verifyColumnSelection(int col)                static boolean
+//   + displayWinMessage(String board, String name): static void
+//   + displayDrawMessage(String board):             static void
+//   + determineRematch():                           static char
 //=========================================================================
 
 
@@ -50,19 +52,19 @@ public class TicTacToe
   //=======================================================================
   public static void main(String[] args)
   {
-    //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     // LOCAL MEMBERS
-    //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     GameBoard gameBoard = new GameBoard();
     Player[]  players = new Player[2];
     Player    activePlayer;
-    int       turn = 1;
+    int       turn;
     int       rowChoice;
     int       colChoice;
     
-    //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     // PLAYER-INSTANTIATING LOOP
-    //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     for(int playerCount = 0; playerCount < players.length; playerCount++)
     {
       do
@@ -75,53 +77,73 @@ public class TicTacToe
     }// END players-iterating for loop
     
     
-    //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    // GAMEPLAY LOOP
-    //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    gameBoard.resetBoard();
-    
+    //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    // REMATCH LOOP
+    //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     do
     {
-      activePlayer = (turn % 2 != 0 ? players[0] : players[1]);
+      gameBoard.resetBoard();
+      turn = 1;
       
-      //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-      // TURN LOOP
-      //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+      //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+      // GAMEPLAY LOOP
+      //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
       do
       {
+        activePlayer = (turn % 2 != 0 ? players[0] : players[1]);
+        
+        //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+        // TURN LOOP
+        //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
         do
         {
-          displayTurnHeader(activePlayer.getPlayerName(), gameBoard.displayGameBoard());
+          //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+          // TURN VERIFICATION LOOP
+          //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+          do
+          {
+            displayTurnHeader(activePlayer.getPlayerName(), gameBoard.displayGameBoard());
+            
+            rowChoice = determineRowChoice();
+            
+            colChoice = determineColumnChoice();
+            
+          }while(!verifyRowSelection(rowChoice) | !verifyColumnSelection(colChoice));
           
-          rowChoice = determineRowChoice();
+          if(!gameBoard.checkEmptyBoardSpace(rowChoice, colChoice))
+          {
+            displayOccupiedMessage(rowChoice, colChoice);
+          }// END if board space already occupied
           
-          colChoice = determineColumnChoice();
-          
-        }while(!verifyRowSelection(rowChoice) | !verifyColumnSelection(colChoice));
+        }while(!gameBoard.checkEmptyBoardSpace(rowChoice, colChoice));
         
-        if(!gameBoard.checkEmptyBoardSpace(rowChoice, colChoice))
+        gameBoard.setBoardSpace(rowChoice, colChoice, activePlayer.getPlayerMarker());
+        
+        gameBoard.checkGameStatus();
+        
+        gameBoard.checkFull();
+        
+        if(gameBoard.getIsWon())
         {
-          displayOccupiedMessage(rowChoice, colChoice);
-        }// END if board space already occupied
+          displayWinMessage(gameBoard.displayGameBoard(), activePlayer.getPlayerName());
+        }// END if game has been won
+        else if(gameBoard.getIsFull())
+        {
+          displayDrawMessage(gameBoard.displayGameBoard());
+        }// END if board is full
         
-      }while(!gameBoard.checkEmptyBoardSpace(rowChoice, colChoice));
+        turn++;
+        
+      }while(!gameBoard.getIsWon() && !gameBoard.getIsFull());
       
-      gameBoard.setBoardSpace(rowChoice, colChoice, activePlayer.getPlayerMarker());
+      //input.nextLine();
       
-      gameBoard.checkGameStatus();
-      
-      if(!gameBoard.getIsActive())
-      {
-        displayWinMessage(gameBoard.displayGameBoard(), activePlayer.getPlayerName());
-      }// END if game is active
-      
-      turn++;
-      
-    }while(gameBoard.getIsActive());
+    }while(Character.toUpperCase(determineRematch()) == 'Y');
     
-    
+    System.exit(0);
     
   }// END main
+  
   
   //=======================================================================
   // METHOD:       determinePlayerName
@@ -133,9 +155,9 @@ public class TicTacToe
   //=======================================================================
   public static String determinePlayerName(int playerCount)
   {
-    System.out.printf("%nPlayer #%d, what is you name?  ",
+    System.out.printf("%nPlayer #%d, enter your name:  ",
                       playerCount + 1);
-    return input.nextLine();
+    return input.nextLine().toUpperCase();
   }// END determinePlayerName
   
   
@@ -186,8 +208,8 @@ public class TicTacToe
   //=======================================================================
   public static void displayTurnHeader(String name, String board)
   {
-    System.out.printf("%n%n=== %S\'S TURN ===" +
-                      "%n%n%s%n%n",
+    System.out.printf("%n=== %s\'S TURN ===" +
+                      "%n%n%s%n",
                       name,
                       board);
   }// END displayTurnHeader
@@ -238,7 +260,7 @@ public class TicTacToe
     
     if(row < 0 || row > 2)
     {
-      System.out.printf("%nInvalid row entry: %d",
+      System.out.printf("%nInvalid row entry: %d%n",
                         row);
       isValid = false;
     }// END if invalid row value
@@ -262,7 +284,7 @@ public class TicTacToe
     
     if(col < 0 || col > 2)
     {
-      System.out.printf("%nInvalid column entry: %d",
+      System.out.printf("%nInvalid column entry: %d%n",
                         col);
       isValid = false;
     }// END if invalid row value
@@ -281,7 +303,7 @@ public class TicTacToe
   //=======================================================================
   public static void displayOccupiedMessage(int row, int col)
   {
-    System.out.printf("%nBoard space (%d, %d) has already been marked. Please try again.",
+    System.out.printf("%nBoard space (%d, %d) has already been marked. Please try again.%n",
                       row,
                       col);
   }// END displayOccupiedMessage
@@ -298,9 +320,42 @@ public class TicTacToe
   public static void displayWinMessage(String board, String name)
   {
     System.out.printf("%n%s" +
-                      "%n%nWINNER: %s",
+                      "%n%nWINNER: %s%n",
                       board,
                       name);
   }// END displayWinMessage
+  
+  
+  //=======================================================================
+  // METHOD:       displayDrawMessage
+  // RETURN TYPE:  void
+  // PARAMETER(S): String board
+  //-----------------------------------------------------------------------
+  // Purpose: To display a message indicating that a Tic-Tac-Toe Board
+  //          there are no winners.
+  //=======================================================================
+  public static void displayDrawMessage(String board)
+  {
+    System.out.printf("%n%s" +
+                      "%n%nGAME OVER" +
+                      "%nIT\'S A DRAW!%n",
+                      board);
+  }// END displayDrawMessage
+  
+  
+  //=======================================================================
+  // METHOD:       determineRematch
+  // RETURN TYPE:  char
+  // PARAMETER(S): n/a
+  //-----------------------------------------------------------------------
+  // Purpose: To prompt for and return a char representing whether
+  //          the Tic-Tac-Toe Players would like to play another game.
+  //=======================================================================
+  public static char determineRematch()
+  {
+    input.nextLine();
+    System.out.printf("%nWould you like to play again? Enter \'Y\' or \'N\':  ");
+    return input.nextLine().charAt(0);
+  }// END determineRematch
   
 }// END APPLICATION CLASS TicTacToe
