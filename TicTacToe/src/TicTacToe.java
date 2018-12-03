@@ -16,6 +16,7 @@
 //
 // Methods:
 //   + main(String[] args):                          static void
+//   + displayGameTitle                              static void
 //   + determinePlayerName(int playerCount):         static String
 //   + determinePlayerMarker(int playerCount):       static char
 //   + verifyPlayerInfo(Player player):              static char
@@ -31,7 +32,7 @@
 
 
 //=========================================================================
-// IMPORT STATEMENTS:
+// IMPORT STATEMENTS
 //=========================================================================
 import java.util.Scanner;
 
@@ -61,6 +62,11 @@ public class TicTacToe
     int       turn;
     int       rowChoice;
     int       colChoice;
+    
+    //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    // DISPLAY GAME TITLE
+    //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    displayGameTitle();
     
     //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     // PLAYER-INSTANTIATING LOOP
@@ -143,6 +149,24 @@ public class TicTacToe
     System.exit(0);
     
   }// END main
+  
+  
+  //=======================================================================
+  // METHOD:       displayGameTitle
+  // RETURN TYPE:  void
+  // PARAMETER(S): n/a
+  //-----------------------------------------------------------------------
+  // Purpose: To display the Tic-Tac-Toe game title and author credits.
+  //=======================================================================
+  public static void displayGameTitle()
+  {
+    System.out.printf("%n T | I | C"  +
+                      "%n---+---+---" +
+                      "%n T | A | C"  +
+                      "%n---+---+---" +
+                      "%n T | O | E" +
+                      "%n%nWritten by Zachary Guajardo%n%n");
+  }// END displayGameTitle
   
   
   //=======================================================================
